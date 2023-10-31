@@ -11,8 +11,10 @@ def create_auth_token(sender, instance=None, created=False, **kwargs):
         Token.objects.create(user=instance.user)
 
 
-@receiver(post_save, sender=Network)
-def attach_network_to_user(sender, instance, created, **kwargs):
-    if created and instance.user is None:
-        instance.user = User.objects.get(pk=instance.created_by.id)
-        instance.save()
+#@receiver(post_save, sender=Network)
+#def attach_network_to_user(sender, instance, created, **kwargs):
+#    if created and instance.user:
+#        employee = Employee.objects.get(user=instance.employee_id)
+#        if employee:
+#            instance.employee_id = employee.id
+#            instance.save()

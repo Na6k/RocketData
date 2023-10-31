@@ -16,9 +16,8 @@ router.register(r"networks", NetworkViewSet)
 router.register(r"products", ProductViewSet)
 router.register(r"employees", EmployeeViewSet)
 router.register(r"networks/high-debt", HighDebtNetworksView, basename="network-high-debt")
-router.register(r"networks/contry/(?P<country>[A-Z]+)", NetworkByCountry, basename="network-by-country")
-router.register(r"networks/product/1", NetworksByProductView, basename="networks-by-product")
-# router.register(r"networks/(?P<country>[A-Z]+)", NetworkByCountry, basename="network-by-country")
+router.register(r"networks/contry/", NetworkByCountry, basename="network-by-country")
+router.register(r"networks/product/", NetworksByProductView, basename="networks-by-product")
 
 
 urlpatterns = [

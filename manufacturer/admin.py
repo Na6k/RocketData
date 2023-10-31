@@ -1,13 +1,13 @@
 from django.core.serializers import json, serialize
 from django.contrib import admin
-from manufacturer.models import Network, Employee
+from manufacturer.models import Network, Employee, Product
 from manufacturer.tasks import clear_debt_async
 from django.utils.html import format_html
 
 
 @admin.register(Network)
 class NetworkAdmin(admin.ModelAdmin):
-    list_display = ("name", "country", "city", "supplier_link", "debt")
+    list_display = ("name", "country", "city", "supplier_link", "debt", "employee")
     list_filter = ("city",)
     actions = ["clear_debt"]
 
@@ -34,4 +34,10 @@ class NetworkAdmin(admin.ModelAdmin):
 
 @admin.register(Employee)
 class EmployeeAdmin(admin.ModelAdmin):
-    list_display = ("user", "name", "network", "is_active")
+    list_display = ("user", "name", "is_active")
+
+
+@admin.register(Product)
+class ProductAdmin(admin.ModelAdmin):
+    list_display = ("name", "model", "release_date")
+

@@ -15,8 +15,8 @@ from rest_framework.decorators import action
 class NetworkViewSet(viewsets.ModelViewSet):
     queryset = Network.objects.all()
     serializer_class = NetworkSerializer
-    filter_backends = [UserNetworkFilterBackend]
     permission_classes = [IsUserNetwork]
+    filter_backends = [UserNetworkFilterBackend]
 
     @action(detail=True, methods=['post'])
     def generate_qr_code_and_send_email(self, request, pk=None):
