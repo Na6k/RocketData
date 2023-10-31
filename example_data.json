@@ -1,0 +1,112 @@
+[
+    {
+      "model": "manufacturer.network",
+      "pk": 1,
+      "fields": {
+        "name": "Завод",
+        "email": "factory@example.com",
+        "country": "Country 1",
+        "city": "City 1",
+        "street": "Street 1",
+        "house_number": "1",
+        "supplier": null,
+        "debt": 0,
+        "created_at": "2023-10-25T12:00:00Z"
+      }
+    },
+    {
+      "model": "manufacturer.network",
+      "pk": 2,
+      "fields": {
+        "name": "Дистрибьютор",
+        "email": "distributor@example.com",
+        "country": "Country 2",
+        "city": "City 2",
+        "street": "Street 2",
+        "house_number": "2",
+        "supplier": 1,
+        "debt": 1000.50,
+        "created_at": "2023-10-25T13:00:00Z"
+      }
+    },
+    {
+        "model": "manufacturer.network",
+        "pk": 3,
+        "fields": {
+          "name": "Дилерский центр",
+          "email": "distributor@example.com",
+          "country": "Country 3",
+          "city": "City 3",
+          "street": "Street 3",
+          "house_number": "3",
+          "supplier": 2,
+          "debt": 1000.50,
+          "created_at": "2023-10-25T13:00:00Z"
+        }
+      },
+      {
+        "model": "manufacturer.network",
+        "pk": 4,
+        "fields": {
+          "name": "Крупная розничная сеть",
+          "email": "distributor@example.com",
+          "country": "Country 4",
+          "city": "City 4",
+          "street": "Street 4",
+          "house_number": "4",
+          "supplier": 3,
+          "debt": 1000.50,
+          "created_at": "2023-10-25T13:00:00Z"
+        }
+      },
+      {
+        "model": "manufacturer.network",
+        "pk": 5,
+        "fields": {
+          "name": "Индивидуальный предприниматель",
+          "email": "distributor@example.com",
+          "country": "Country 5",
+          "city": "City 5",
+          "street": "Street 5",
+          "house_number": "5",
+          "supplier": 4,
+          "debt": 1000.50,
+          "created_at": "2023-10-25T13:00:00Z"
+        }
+      },
+      {
+        "model": "manufacturer.product",
+        "pk": 1,
+        "fields": {
+          "name": "Продукт 1",
+          "model": "Модель 1",
+          "release_date": "2023-10-01"
+        }
+      },
+      {
+        "model": "manufacturer.product",
+        "pk": 2,
+        "fields": {
+          "name": "Продукт 2",
+          "model": "Модель 2",
+          "release_date": "2023-10-01"
+        }
+      },
+      {
+        "model": "manufacturer.networkproduct",
+        "pk": 1,
+        "fields": {
+            "network": 2,
+            "product": 1
+        }
+      },
+      {
+        "model": "manufacturer.networkproduct",
+        "pk": 2,
+        "fields": {
+            "network": 2,
+            "product": 2
+        }
+      }
+  ]
+  
