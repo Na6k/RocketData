@@ -21,7 +21,7 @@
    - `python3 manage.py loaddata example_data.json`
 
 
-## Celery and RabbitMQ
+## Celery and Redis
 
 1. В качестве брокера используется Redis, все необходимые настройки к нему нужно указан в root/settings.py
 2. Я запускал Redis из docker image:
