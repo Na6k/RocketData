@@ -1,13 +1,14 @@
 import random
 import smtplib
-from django.core.serializers import json, deserialize
+import qrcode
+from django.core.serializers import deserialize
 from celery import shared_task
 from .models import Network
 from email.mime.text import MIMEText
 from email.mime.image import MIMEImage
 from email.mime.multipart import MIMEMultipart
-from django.core.mail import send_mail
-from manufacturer.generate_qr import generate_qr_code
+from django.conf import settings
+from io import BytesIO
 
 
 @shared_task
@@ -40,31 +41,39 @@ def decrease_debt():
 @shared_task
 def generate_qr_code_and_send_email(network_id, user_email):
     try:
-        # Получите объект сети
         network = Network.objects.get(pk=network_id)
 
-        # Сгенерируйте QR-код
-        qr_code_data = generate_qr_code(network)
+        qr = qrcode.QRCode(version=1, error_correction=qrcode.constants.ERROR_CORRECT_L, box_size=10, border=4)
+        qr.add_data(network.name)
+        qr.make(fit=True)
 
-        # Отправьте QR-код на адрес электронной почты пользователя
-        subject = "QR Code for Network Contact Info"
-        message = "Here is the QR code with contact information for the network."
-        from_email = "your_email@gmail.com"  # Ваша почта
-        recipient_list = [user_email]
+        img = qr.make_image(fill_color="black", back_color="white")
+
+        img_byte_array = BytesIO()
+        img.save(img_byte_array, format="PNG")
+        img_byte_array.seek(0)
+
+        from_email = settings.EMAIL_HOST_USER
+        to_email = user_email
+
+        server = smtplib.SMTP(settings.EMAIL_HOST, settings.EMAIL_PORT)
+        server.starttls()
+        server.login(settings.EMAIL_HOST_USER, settings.EMAIL_HOST_PASSWORD)
 
         msg = MIMEMultipart()
-        msg["Subject"] = subject
-        msg["From"] = from_email
-        msg["To"] = user_email
 
-        text = MIMEText(message)
-        msg.attach(text)
+        message = "Here is the QR code with contact information for the network."
+        msg.attach(MIMEText(message, "plain"))
 
-        image = MIMEImage(qr_code_data, name="qr_code.png")
+        image = MIMEImage(img_byte_array.read(), name="qr_code.png", content_type="image/png")
         msg.attach(image)
 
-        # Отправка письма
-        send_mail(subject, message, from_email, recipient_list, fail_silently=False, html_message=msg.as_string())
+        msg["Subject"] = "QR Code for Network Contact Info"
+        msg["From"] = from_email
+        msg["To"] = to_email
+
+        server.sendmail(from_email, to_email, msg.as_string())
+        server.quit()
 
     except Network.DoesNotExist:
         print("Network not found.")

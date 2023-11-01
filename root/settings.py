@@ -23,8 +23,10 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "rest_framework",
-    "rest_framework.authtoken",
     "manufacturer",
+    "rest_framework_simplejwt",
+    "drf_spectacular",
+    'django_extensions'
 ]
 
 
@@ -89,6 +91,7 @@ USE_TZ = True
 
 
 STATIC_URL = "static/"
+STATICFILES_DIRS = (BASE_DIR / "root" / "static",)
 
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
@@ -98,22 +101,24 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 CELERY_BROKER_URL = "redis://localhost:6379/0"
 CELERY_RESULT_BACKEND = "redis://localhost:6379/0"
 
-# Опционально: Укажите другие настройки Celery
-CELERY_RESULT_BACKEND = "redis://localhost:6379/0"
 CELERY_ACCEPT_CONTENT = ["application/json", "json"]
 CELERY_TASK_SERIALIZER = "json"
 CELERY_RESULT_SERIALIZER = "json"
 
 
 REST_FRAMEWORK = {
-    # Use Django's standard `django.contrib.auth` permissions,
-    # or allow read-only access for unauthenticated users.
-    "DEFAULT_RENDERER_CLASSES": [
-        "rest_framework.renderers.JSONRenderer",
-        "rest_framework.renderers.BrowsableAPIRenderer",
-    ],
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
     "DEFAULT_PERMISSION_CLASSES": [
-        "rest_framework.permissions.IsAuthenticated"
-    ],
+        "rest_framework.permissions.IsAuthenticated",
+        "manufacturer.permissions.IsUserNetwork",
+    ]
 }
 
+# Настройки smtp
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = os.getenv("EMAIL_HOST")
+EMAIL_USE_TLS = True
+EMAIL_PORT = os.getenv("EMAIL_PORT")
+EMAIL_HOST_USER = os.getenv("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = os.getenv("EMAIL_HOST_PASSWORD")
+RECIPIENTS_EMAIL = os.getenv("RECIPIENTS_EMAIL")
