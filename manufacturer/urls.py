@@ -9,8 +9,6 @@ from .views import (
     HighDebtNetworksView,
     NetworksByProductView,
 )
-from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
-from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 
 router = DefaultRouter()
 
@@ -30,9 +28,5 @@ urlpatterns = [
     path(
         "networks/generate-qr-code-and-email/<int:pk>/", NetworkViewSet.as_view({"post": "generate_qr_code_and_send_email"}), name="generate-qr",
     ),
-    path("api/token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
-    path("api/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
-    path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
-    path("api/docs/", SpectacularSwaggerView.as_view(url_name="schema")),
     path("", include(router.urls)),
 ]
